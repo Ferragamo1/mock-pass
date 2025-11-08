@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mock Metro Pass — iOS Style</title>
+<title>Mock Metro Pass — iOS Digital Style</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -58,7 +58,7 @@ html,body{
   align-items:center;
   justify-content:center;
   animation:pulse 4s ease-in-out infinite;
-  margin-top:100px; /* slightly up */
+  margin-top:100px;
 }
 .ring::before{
   content:"";
@@ -90,7 +90,7 @@ html,body{
 
 /* Time clock */
 .time{
-  font-size:50px;
+  font-size:52px;
   font-weight:800;
   letter-spacing:-1px;
   text-align:center;
@@ -98,17 +98,28 @@ html,body{
   margin-top:120px;
   margin-bottom:14px;
   color:var(--text);
-  font-variant-numeric:tabular-nums; /* keeps even spacing */
-  font-feature-settings:"tnum"; 
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
 }
-.time .colon{
-  display:inline-block;
-  width:6px;
-  height:18px;
-  background:var(--text);
+.time span{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:center;
+  width:10px;
+  height:calc(0.35em + 0.35em);
   margin:0 6px;
-  border-radius:2px; /* gives square edges */
-  transform:translateY(2px);
+}
+.time span::before,
+.time span::after{
+  content:"";
+  display:block;
+  width:10px;
+  height:10px;
+  background:var(--text);
+  border-radius:2px;
 }
 
 /* Card */
@@ -158,9 +169,7 @@ html,body{
         </div>
       </div>
 
-      <div id="time" class="time">
-        0<span class="colon"></span>00<span class="colon"></span>00 PM
-      </div>
+      <div id="time" class="time">9<span></span>27<span></span>45 AM</div>
 
       <div class="card">
         <h3>Adult All-Day</h3>
@@ -186,7 +195,7 @@ function updateTime(){
   const now=new Date();
   const {h,m,s,am}=formatTime(now);
 
-  timeEl.innerHTML = `${h}<span class="colon"></span>${m}<span class="colon"></span>${s} ${am?'AM':'PM'}`;
+  timeEl.innerHTML = `${h}<span></span>${m}<span></span>${s} ${am?'AM':'PM'}`;
 
   const exp=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,2,0,0);
   const opt={month:'short',day:'numeric',year:'numeric'};
