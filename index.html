@@ -59,7 +59,6 @@ html,body{
   justify-content:center;
   animation:pulse 4s ease-in-out infinite;
   margin-top:120px; /* circle stays fixed */
-  margin-bottom:0;
 }
 .ring::before{
   content:"";
@@ -88,16 +87,25 @@ html,body{
   height:80%;
   object-fit:contain;
 }
+
+/* Time clock bar */
 .time{
-  font-size:32px;
+  font-size:42px; /* bigger text for width coverage */
   font-weight:800;
   letter-spacing:-0.5px;
   text-align:center;
-  margin-top:160px; /* moves clock down */
-  margin-bottom:10px; /* tiny space above card */
+  width:calc(100% - 20px); /* almost full width of card, tiny gap on each side */
+  background:white;
+  border-radius:10px;
+  padding:10px 0;
+  margin-top:160px; /* same vertical offset as before */
+  margin-bottom:12px; /* small space above card */
+  box-shadow:0 4px 18px rgba(0,0,0,0.05);
 }
+
+/* Card (restored to original position) */
 .card{
-  margin-top:0; /* returns card to its original spot */
+  margin-top:0;
   background:var(--card);
   border-radius:12px;
   padding:16px;
