@@ -3,129 +3,126 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mock Metro Pass</title>
+<title>Mock Metro Pass — iOS Style</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#ffffff;
-  --accent:#ff5a00;
-  --shadow:rgba(255,90,0,0.18);
-  --muted:#666;
-  --text:#141416;
-  --ring-size:180px;   /* smaller circle */
-  --logo-size:95px;    /* smaller logo */
+:root{
+  --page:#f8f8f8;
+  --card:#ffffff;
+  --text:#1b1c1e;
+  --muted:#73767d;
+  --shadow:rgba(10,20,30,0.08);
+  --ring-diam:180px;   /* smaller circle size */
+  --logo-size:95px;    /* smaller logo inside */
 }
-* { box-sizing:border-box; }
-html,body {
-  margin:0;
-  height:100%;
-  background:var(--bg);
-  font-family:Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+*{box-sizing:border-box;}
+html,body{
+  height:100%;margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:linear-gradient(180deg,#fdfdfd,#f3f4f6);
   color:var(--text);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
 }
-.container {
-  width:100%;
+.container{
   max-width:420px;
-  padding:24px 18px;
+  margin:0 auto;
+  padding:18px 14px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
 }
-.header {
+.header{
   text-align:left;
-  width:100%;
-  margin-bottom:20px;
+  margin-bottom:12px;
 }
-.header h1 {
-  font-size:26px;
+.header h1{
+  font-size:22px;
+  font-weight:800;
   margin:0;
-  font-weight:700;
 }
-.header small {
+.header small{
   color:var(--muted);
-  font-size:14px;
+  font-size:13px;
 }
-.center {
+.center{
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
-  gap:16px;
+  gap:14px;
+  margin-top:8px;
+  flex:1;
 }
-.ring {
+.ring{
   position:relative;
-  width:var(--ring-size);
-  height:var(--ring-size);
+  width:var(--ring-diam);
+  height:var(--ring-diam);
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  animation:floaty 4s ease-in-out infinite;
+  animation:pulse 4s ease-in-out infinite;
 }
-.ring::before {
+.ring::before{
   content:"";
   position:absolute;
   inset:0;
   border-radius:50%;
-  background:conic-gradient(from 0deg, #ff6200, #ff4e00 45%, #ff9640 85%);
-  padding:5px;
-  -webkit-mask: radial-gradient(circle, transparent calc(50% - 20px), black calc(50% - 18px));
-  mask: radial-gradient(circle, transparent calc(50% - 20px), black calc(50% - 18px));
-  animation:glow 3.5s ease-in-out infinite;
+  background:conic-gradient(from 0deg,#ff6600,#ff4800 50%,#ff9442 100%);
+  -webkit-mask:radial-gradient(circle,transparent calc(50% - 4px),black calc(50% - 2px));
+  mask:radial-gradient(circle,transparent calc(50% - 4px),black calc(50% - 2px));
+  box-shadow:0 0 30px rgba(255,90,0,0.18);
 }
-.badge {
+.badge{
+  position:relative;
   width:var(--logo-size);
   height:var(--logo-size);
   border-radius:50%;
-  background:white;
+  background:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
   z-index:2;
-  box-shadow:0 6px 18px rgba(0,0,0,0.1);
 }
-.badge img {
-  width:85%;
-  height:85%;
+.badge img{
+  width:80%;
+  height:80%;
   object-fit:contain;
 }
-.time {
-  font-size:68px;
+.time{
+  font-size:32px;
   font-weight:800;
+  letter-spacing:-0.5px;
   text-align:center;
-  letter-spacing:-1px;
+  margin:10px 0 0;
 }
-.card {
-  margin-top:10px;
+.expire{
+  font-size:16px;
+  color:var(--muted);
+  text-align:center;
+  margin-top:4px;
+}
+.card{
+  margin-top:18px;
+  background:var(--card);
+  border-radius:12px;
+  padding:16px;
+  box-shadow:0 10px 24px var(--shadow);
+  border:1px solid rgba(0,0,0,0.03);
   width:100%;
-  background:white;
-  border-radius:10px;
-  box-shadow:0 8px 24px rgba(0,0,0,0.05);
-  padding:14px 18px;
 }
-.card h3 {
+.card h3{
   margin:0;
   font-size:20px;
-  font-weight:600;
+  font-weight:600; /* lighter but still bold enough */
 }
-.card p {
+.card p{
   margin:4px 0 0;
-  font-size:14px;
   color:var(--muted);
-}
-.card .exp {
-  margin-top:6px;
   font-size:14px;
-  color:#333;
-  font-weight:600;
 }
-@keyframes glow {
-  0%,100% { box-shadow:0 0 20px var(--shadow); }
-  50% { box-shadow:0 0 40px rgba(255,90,0,0.3); }
-}
-@keyframes floaty {
-  0%,100% { transform:translateY(0); }
-  50% { transform:translateY(-5px); }
+@keyframes pulse{
+  0%,100%{transform:scale(1);box-shadow:0 0 20px rgba(255,102,0,0.15);}
+  50%{transform:scale(1.05);box-shadow:0 0 35px rgba(255,102,0,0.25);}
 }
 </style>
 </head>
@@ -143,38 +140,41 @@ html,body {
         </div>
       </div>
 
-      <div id="time" class="time">0:00:00 AM</div>
+      <div id="time" class="time">0:00:00 PM</div>
 
       <div class="card">
         <h3>Adult All-Day</h3>
         <p>Minneapolis / St. Paul Metro Area</p>
-        <div class="exp" id="expiry">Expires Nov 8, 2025 at 2:00 AM</div>
+        <div class="expire" id="expire">Expires Nov 8 2025 · 2:00 AM</div>
       </div>
     </div>
   </div>
 
 <script>
 const timeEl=document.getElementById('time');
-const expiryEl=document.getElementById('expiry');
+const expEl=document.getElementById('expire');
 
 function formatTime(d){
-  let h=d.getHours(),m=d.getMinutes(),s=d.getSeconds();
+  let h=d.getHours();
   const am=h<12;
-  let hh=h%12;if(hh===0)hh=12;
-  return`${hh}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} ${am?'AM':'PM'}`;
+  h=h%12||12;
+  const m=String(d.getMinutes()).padStart(2,'0');
+  const s=String(d.getSeconds()).padStart(2,'0');
+  return`${h}:${m}:${s} ${am?'AM':'PM'}`;
 }
-function tick(){timeEl.textContent=formatTime(new Date());}
-tick();setInterval(tick,1000);
+function updateTime(){
+  const now=new Date();
+  timeEl.textContent=formatTime(now);
 
-function setExpiry(){
-  const n=new Date();
-  const t=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,2,0,0);
+  const exp=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,2,0,0);
   const opt={month:'short',day:'numeric',year:'numeric'};
-  const date=t.toLocaleDateString(undefined,opt);
-  let h=t.getHours();const am=h<12;let hh=h%12;if(hh===0)hh=12;
-  expiryEl.textContent=`Expires ${date} at ${hh}:00 ${am?'AM':'PM'}`;
+  const date=exp.toLocaleDateString(undefined,opt);
+  let hh=exp.getHours();const am=hh<12;hh=hh%12||12;const mm=String(exp.getMinutes()).padStart(2,'0');
+  expEl.textContent=`Expires ${date} · ${hh}:${mm} ${am?'AM':'PM'}`;
 }
-setExpiry();
+
+updateTime();
+setInterval(updateTime,1000);
 </script>
 </body>
 </html>
