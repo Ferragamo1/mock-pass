@@ -88,22 +88,19 @@ html,body{
   object-fit:contain;
 }
 
-/* Time clock bar */
+/* Time clock - plain (no card background) */
 .time{
-  font-size:42px; /* bigger text for width coverage */
+  font-size:42px;
   font-weight:800;
   letter-spacing:-0.5px;
   text-align:center;
-  width:calc(100% - 20px); /* almost full width of card, tiny gap on each side */
-  background:white;
-  border-radius:10px;
-  padding:10px 0;
-  margin-top:160px; /* same vertical offset as before */
-  margin-bottom:12px; /* small space above card */
-  box-shadow:0 4px 18px rgba(0,0,0,0.05);
+  width:calc(100% - 20px);
+  margin-top:160px;
+  margin-bottom:12px;
+  color:var(--text);
 }
 
-/* Card (restored to original position) */
+/* Card (same as before) */
 .card{
   margin-top:0;
   background:var(--card);
