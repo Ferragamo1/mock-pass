@@ -19,18 +19,38 @@
   .pass-wrap{position:relative;height:560px;display:flex;flex-direction:column;align-items:stretch;transform-style:preserve-3d}
   /* 3D glowing pass */
   .pass {
-    margin:auto;
-    width:100%;
-    background:var(--card);
-    border-radius:16px;
-    padding:22px;
-    box-shadow: 0 22px 40px rgba(10,20,30,0.12), 0 4px 12px rgba(10,20,30,0.06);
-    transform-origin:center;
-    transform: translateY(0) rotateX(0deg);
-    transition: transform 650ms cubic-bezier(.2,.9,.3,1), box-shadow 500ms;
-    backface-visibility: hidden;
-  }
+  margin: auto;
+  width: 100%;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 22px 40px rgba(10, 20, 30, 0.12),
+              0 4px 12px rgba(10, 20, 30, 0.06);
+  transform-origin: center;
+  backface-visibility: hidden;
+  animation: floaty 4s ease-in-out infinite, glowPulse 3s ease-in-out infinite;
+}
 
+/* floating tilt motion */
+@keyframes floaty {
+  0%   { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+  25%  { transform: translateY(-6px) rotateX(1deg) rotateY(-1deg); }
+  50%  { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+  75%  { transform: translateY(6px) rotateX(-1deg) rotateY(1deg); }
+  100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+}
+
+/* glowing pulse like Metro */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 122, 0, 0.15),
+                0 0 60px rgba(255, 122, 0, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 32px rgba(255, 122, 0, 0.35),
+                0 0 90px rgba(255, 122, 0, 0.15);
+  }
+}
   /* glow */
   .pass.glow {
     box-shadow: 0 30px 80px rgba(255,122,0,0.18), 0 6px 18px rgba(0,0,0,0.08);
