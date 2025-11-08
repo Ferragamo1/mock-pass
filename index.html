@@ -1,0 +1,176 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mock Transit Pass</title>
+<style>
+  :root{
+    --bg:#f6f7f8;
+    --card:#fff;
+    --accent:#ff7a00;
+    --blue:#0b6ee6;
+    --glass: rgba(255,255,255,0.85);
+  }
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  body{background:linear-gradient(180deg,var(--bg),#eceff1);display:flex;align-items:center;justify-content:center;padding:20px}
+  .stage{width:100%;max-width:420px;perspective:1200px}
+  .pass-wrap{position:relative;height:560px;display:flex;flex-direction:column;align-items:stretch;transform-style:preserve-3d}
+  /* 3D glowing pass */
+  .pass {
+    margin:auto;
+    width:100%;
+    background:var(--card);
+    border-radius:16px;
+    padding:22px;
+    box-shadow: 0 22px 40px rgba(10,20,30,0.12), 0 4px 12px rgba(10,20,30,0.06);
+    transform-origin:center;
+    transform: translateY(0) rotateX(0deg);
+    transition: transform 650ms cubic-bezier(.2,.9,.3,1), box-shadow 500ms;
+    backface-visibility: hidden;
+  }
+
+  /* glow */
+  .pass.glow {
+    box-shadow: 0 30px 80px rgba(255,122,0,0.18), 0 6px 18px rgba(0,0,0,0.08);
+  }
+
+  /* slide in/out animation */
+  .pass.enter { animation: slideIn 700ms cubic-bezier(.2,.9,.3,1) forwards; }
+  .pass.exit { animation: slideOut 700ms cubic-bezier(.2,.9,.3,1) forwards; }
+
+  @keyframes slideIn {
+    0% { transform: translateY(120px) rotateX(18deg) scale(0.98); opacity:0.0; filter: blur(6px) }
+    60% { transform: translateY(-8px) rotateX(6deg) scale(1.01); opacity:1; filter: blur(0) }
+    100% { transform: translateY(0) rotateX(0deg) scale(1) }
+  }
+  @keyframes slideOut {
+    0% { transform: translateY(0) rotateX(0deg) scale(1); opacity:1 }
+    100% { transform: translateY(-160px) rotateX(-20deg) scale(0.96); opacity:0; filter: blur(6px) }
+  }
+
+  .header { display:flex;justify-content:space-between;align-items:center; margin-bottom:6px }
+  .header h1{font-size:20px;margin:0;font-weight:700;color:#333}
+  .sub{color:#777;font-size:13px}
+  .logo {
+    width:84px;height:84px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:conic-gradient(from 0deg,#ff9a3a,#ff7a00 40%, #ffc18a 80%);
+    box-shadow: 0 6px 18px rgba(255,122,0,0.18) inset;
+    margin:12px auto;
+  }
+  .logo .mark { font-weight:800; color:white; font-size:26px; letter-spacing:0.6px; font-family:Inter, sans-serif}
+  .time { text-align:center; font-size:64px; font-weight:800; color:#111; letter-spacing:-1px; margin:6px 0 10px}
+  .meta { padding:14px 12px; font-size:15px; color:#444 }
+  .small { font-size:13px; color:#666 }
+  .divider{height:1px;background:#eee;margin:10px 0;border-radius:2px}
+  .expires{display:flex;justify-content:space-between;align-items:center;font-weight:600}
+  .footer-hint{font-size:12px;color:#999;text-align:center;margin-top:14px}
+
+  /* tiny responsive */
+  @media (max-width:420px){ .time{font-size:48px} .logo{width:72px;height:72px} }
+
+  /* button style */
+  .controls{display:flex;gap:10px;justify-content:center;margin-top:14px}
+  .btn{background:transparent;border:1px solid rgba(0,0,0,0.06);padding:8px 12px;border-radius:10px;font-weight:600;color:#333}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="pass-wrap">
+      <div id="pass" class="pass enter glow" role="article" aria-label="mock transit pass">
+        <div class="header">
+          <div>
+            <h1>Metro Transit</h1>
+            <div class="sub">Show operator your ticket</div>
+          </div>
+          <div style="text-align:right">
+            <div class="small">Adult All-Day</div>
+            <div class="small" style="margin-top:6px;color:#888">Minneapolis / St. Paul</div>
+          </div>
+        </div>
+
+        <div class="logo" aria-hidden="true"><div class="mark">go</div></div>
+
+        <div id="time" class="time">0:00:00 AM</div>
+
+        <div class="meta">
+          <div class="divider"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="small">Expires</div>
+            <div id="expiry" class="expires">Nov 8, 2025 at 2:00 AM</div>
+          </div>
+          <div class="divider"></div>
+          <div class="footer-hint">Tap and hold to add to Home Screen for app feel</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-hidden="true">
+        <button id="toggle" class="btn">Slide Out / In</button>
+        <button id="glowBtn" class="btn">Toggle Glow</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // live time updater (exact current time)
+  const timeEl = document.getElementById('time');
+  const expiryEl = document.getElementById('expiry');
+
+  function fmtTime(d){
+    // h:mm:ss AM/PM
+    let h = d.getHours();
+    const am = h < 12;
+    let hh = h % 12; if (hh === 0) hh = 12;
+    const mm = String(d.getMinutes()).padStart(2,'0');
+    const ss = String(d.getSeconds()).padStart(2,'0');
+    return `${hh}:${mm}:${ss} ${am ? 'AM' : 'PM'}`;
+  }
+
+  function setExpiryToTomorrow2am(){
+    const now = new Date();
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 2, 0, 0);
+    // format like: Nov 8, 2025 at 2:00 AM
+    const opts = { month:'short', day:'numeric', year:'numeric' };
+    const datePart = tomorrow.toLocaleDateString(undefined, opts);
+    let h = tomorrow.getHours();
+    const am = h < 12;
+    let hh = h % 12; if (hh === 0) hh = 12;
+    const mm = String(tomorrow.getMinutes()).padStart(2,'0');
+    const timePart = `${hh}:${mm} ${am ? 'AM' : 'PM'}`;
+    expiryEl.textContent = `${datePart} at ${timePart}`;
+  }
+
+  setExpiryToTomorrow2am();
+
+  function tick(){
+    const now = new Date();
+    timeEl.textContent = fmtTime(now);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // slide in/out and glow
+  const pass = document.getElementById('pass');
+  document.getElementById('toggle').onclick = () => {
+    if(pass.classList.contains('exit')){
+      pass.classList.remove('exit');
+      pass.classList.add('enter');
+    } else {
+      pass.classList.remove('enter');
+      pass.classList.add('exit');
+      setTimeout(()=>{ pass.classList.remove('exit'); pass.classList.add('enter'); }, 900);
+    }
+  };
+  document.getElementById('glowBtn').onclick = () => pass.classList.toggle('glow');
+
+  // double-tap: refresh expiry if day rolls while open
+  window.addEventListener('visibilitychange', ()=> {
+    if(document.visibilityState === 'visible') setExpiryToTomorrow2am();
+  });
+
+  // friendly hint: on iPhone Safari use Share -> Add to Home Screen
+</script>
+</body>
+</html>
