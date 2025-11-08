@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Mock Metro Pass — Realistic Style</title>
+<title>Mock Metro Pass — Refined</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -26,11 +26,23 @@ html,body{
   max-width:420px;margin:0 auto;
   padding:18px 14px;
   min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;
+  display:flex;flex-direction:column;
 }
-.header{text-align:center;margin-bottom:10px}
-.header h1{font-size:22px;font-weight:800;margin:0}
-.header small{color:var(--muted);font-size:14px}
+.header{
+  text-align:left;
+  margin-bottom:12px;
+}
+.header h1{
+  font-size:22px;font-weight:800;margin:0;
+}
+.header small{
+  color:var(--muted);
+  font-size:13px;
+}
+.center{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  margin-top:8px;flex:1;
+}
 .ring{
   position:relative;
   width:var(--ring-diam);
@@ -59,8 +71,7 @@ html,body{
   z-index:2;
 }
 .badge img{
-  width:80%;
-  height:80%;
+  width:80%;height:80%;
   object-fit:contain;
 }
 .time{
@@ -68,12 +79,13 @@ html,body{
   font-weight:800;
   letter-spacing:-0.5px;
   text-align:center;
-  margin:12px 0 2px;
+  margin:10px 0 0;
 }
 .expire{
   font-size:16px;
   color:var(--muted);
   text-align:center;
+  margin-top:4px;
 }
 .card{
   margin-top:18px;
@@ -84,13 +96,15 @@ html,body{
   border:1px solid rgba(0,0,0,0.03);
   width:100%;
 }
-.card h3{margin:0;font-size:16px;font-weight:700}
-.card p{margin:4px 0 0;color:var(--muted);font-size:14px}
-.card .exp{
-  margin-top:12px;padding-top:8px;
-  border-top:1px solid #f0f0f0;
-  display:flex;justify-content:space-between;
-  font-weight:600;color:#333;font-size:14px;
+.card h3{
+  margin:0;
+  font-size:20px;
+  font-weight:600; /* lighter than before */
+}
+.card p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:14px;
 }
 
 @keyframes pulse{
@@ -106,33 +120,48 @@ html,body{
       <small>Show operator your ticket</small>
     </div>
 
-    <div class="ring">
-      <div class="badge">
-        <img src="goto_logo.png" alt="Go-To logo">
+    <div class="center">
+      <div class="ring">
+        <div class="badge">
+          <img src="goto_logo.png" alt="Go-To logo">
+        </div>
       </div>
-    </div>
 
-    <div id="time" class="time">0:00 PM</div>
-    <div id="expire" class="expire">Expires Nov 8 2025 · 2:00 AM</div>
+      <div id="time" class="time">0:00:00 PM</div>
 
-    <div class="card">
-      <h3>Adult All-Day Pass</h3>
-      <p>Minneapolis / St. Paul Metro Area</p>
-      <div class="exp"><span>Fare Type</span><span>All-Day</span></div>
+      <div class="card">
+        <h3>Adult All-Day</h3>
+        <p>Minneapolis / St. Paul Metro Area</p>
+        <div class="expire" id="expire">Expires Nov 8 2025 · 2:00 AM</div>
+      </div>
     </div>
   </div>
 
 <script>
-const t=document.getElementById('time');
-const e=document.getElementById('expire');
-function fmt(d){let h=d.getHours();const am=h<12;h=h%12||12;const m=String(d.getMinutes()).padStart(2,'0');return`${h}:${m} ${am?'AM':'PM'}`;}
-function upd(){
-  const now=new Date();
-  t.textContent=fmt(now);
-  const exp=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,2,0);
-  e.textContent=`Expires ${exp.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric'})} · ${fmt(exp)}`;
+const timeEl=document.getElementById('time');
+const expEl=document.getElementById('expire');
+
+function formatTime(d){
+  let h=d.getHours();
+  const am=h<12;
+  h=h%12||12;
+  const m=String(d.getMinutes()).padStart(2,'0');
+  const s=String(d.getSeconds()).padStart(2,'0');
+  return`${h}:${m}:${s} ${am?'AM':'PM'}`;
 }
-upd();setInterval(upd,1000);
+function updateTime(){
+  const now=new Date();
+  timeEl.textContent=formatTime(now);
+
+  const exp=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,2,0,0);
+  const opt={month:'short',day:'numeric',year:'numeric'};
+  const date=exp.toLocaleDateString(undefined,opt);
+  let hh=exp.getHours();const am=hh<12;hh=hh%12||12;const mm=String(exp.getMinutes()).padStart(2,'0');
+  expEl.textContent=`Expires ${date} · ${hh}:${mm} ${am?'AM':'PM'}`;
+}
+
+updateTime();
+setInterval(updateTime,1000);
 </script>
 </body>
 </html>
