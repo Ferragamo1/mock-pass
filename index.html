@@ -47,7 +47,6 @@ html,body{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:14px;
   margin-top:8px;
   flex:1;
 }
@@ -60,6 +59,7 @@ html,body{
   align-items:center;
   justify-content:center;
   animation:pulse 4s ease-in-out infinite;
+  margin-bottom:24px; /* keeps gap between circle and time */
 }
 .ring::before{
   content:"";
@@ -93,10 +93,10 @@ html,body{
   font-weight:800;
   letter-spacing:-0.5px;
   text-align:center;
-  margin:10px 0 0;
+  margin-bottom:20px; /* gap between time and card */
 }
 .card{
-  margin-top:200px; /* moved much lower — 5x original */
+  margin-top:auto; /* pushes card lower */
   background:var(--card);
   border-radius:12px;
   padding:16px;
@@ -107,13 +107,13 @@ html,body{
 .card h3{
   margin:0;
   font-size:20px;
-  font-weight:400; /* unbolded */
+  font-weight:400;
 }
 .card p{
   margin:4px 0 0;
   color:var(--muted);
   font-size:14px;
-  margin-bottom:24px; /* extra space before expires */
+  margin-bottom:24px;
 }
 .expire{
   font-size:14px;
