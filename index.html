@@ -58,7 +58,7 @@ html,body{
   align-items:center;
   justify-content:center;
   animation:pulse 4s ease-in-out infinite;
-  margin-top:120px; /* keep ring in same spot */
+  margin-top:120px; /* circle stays fixed */
   margin-bottom:0;
 }
 .ring::before{
@@ -93,10 +93,11 @@ html,body{
   font-weight:800;
   letter-spacing:-0.5px;
   text-align:center;
-  margin-top:200px; /* moves time closer to card */
-  margin-bottom:10px; /* tiny space between time and card */
+  margin-top:160px; /* moves clock down */
+  margin-bottom:10px; /* tiny space above card */
 }
 .card{
+  margin-top:0; /* returns card to its original spot */
   background:var(--card);
   border-radius:12px;
   padding:16px;
@@ -121,61 +122,4 @@ html,body{
   color:#333;
   text-align:left;
 }
-@keyframes pulse{
-  0%,100%{transform:scale(1);box-shadow:0 0 20px rgba(255,102,0,0.15);}
-  50%{transform:scale(1.05);box-shadow:0 0 35px rgba(255,102,0,0.25);}
-}
-</style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>Metro Transit</h1>
-      <small>Show operator your ticket</small>
-    </div>
-
-    <div class="center">
-      <div class="ring">
-        <div class="badge">
-          <img src="goto_logo.png" alt="Go-To logo">
-        </div>
-      </div>
-
-      <div id="time" class="time">0:00:00 PM</div>
-
-      <div class="card">
-        <h3>Adult All-Day</h3>
-        <p>Minneapolis / St. Paul Metro Area</p>
-        <div class="expire" id="expire">Expires Nov 8, 2025 · 2:00 AM</div>
-      </div>
-    </div>
-  </div>
-
-<script>
-const timeEl=document.getElementById('time');
-const expEl=document.getElementById('expire');
-
-function formatTime(d){
-  let h=d.getHours();
-  const am=h<12;
-  h=h%12||12;
-  const m=String(d.getMinutes()).padStart(2,'0');
-  const s=String(d.getSeconds()).padStart(2,'0');
-  return`${h}:${m}:${s} ${am?'AM':'PM'}`;
-}
-function updateTime(){
-  const now=new Date();
-  timeEl.textContent=formatTime(now);
-
-  const exp=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,2,0,0);
-  const opt={month:'short',day:'numeric',year:'numeric'};
-  const date=exp.toLocaleDateString(undefined,opt);
-  let hh=exp.getHours();const am=hh<12;hh=hh%12||12;const mm=String(exp.getMinutes()).padStart(2,'0');
-  expEl.textContent=`Expires ${date} · ${hh}:${mm} ${am?'AM':'PM'}`;
-}
-
-updateTime();
-setInterval(updateTime,1000);
-</script>
-</body>
-</html>
+@keyframes
