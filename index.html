@@ -48,7 +48,6 @@ html,body{
   flex-direction:column;
   align-items:center;
   flex:1;
-  margin-top:120px; /* shifted ring + time lower */
 }
 .ring{
   position:relative;
@@ -59,7 +58,8 @@ html,body{
   align-items:center;
   justify-content:center;
   animation:pulse 4s ease-in-out infinite;
-  margin-bottom:24px;
+  margin-top:120px; /* keep ring in same spot */
+  margin-bottom:0;
 }
 .ring::before{
   content:"";
@@ -93,10 +93,10 @@ html,body{
   font-weight:800;
   letter-spacing:-0.5px;
   text-align:center;
-  margin-bottom:20px; /* keeps gap before card */
+  margin-top:200px; /* moves time closer to card */
+  margin-bottom:10px; /* tiny space between time and card */
 }
 .card{
-  margin-top:40px; /* restored card position */
   background:var(--card);
   border-radius:12px;
   padding:16px;
