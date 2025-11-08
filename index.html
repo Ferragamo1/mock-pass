@@ -58,7 +58,7 @@ html,body{
   align-items:center;
   justify-content:center;
   animation:pulse 4s ease-in-out infinite;
-  margin-top:120px; /* circle stays fixed */
+  margin-top:100px; /* moved slightly up */
 }
 .ring::before{
   content:"";
@@ -88,19 +88,19 @@ html,body{
   object-fit:contain;
 }
 
-/* Time clock - plain (no card background) */
+/* Time clock */
 .time{
-  font-size:42px;
+  font-size:50px; /* bigger and more dominant */
   font-weight:800;
-  letter-spacing:-0.5px;
+  letter-spacing:-1px;
   text-align:center;
   width:calc(100% - 20px);
-  margin-top:160px;
-  margin-bottom:12px;
+  margin-top:120px; /* moved up */
+  margin-bottom:14px; /* keeps spacing with card */
   color:var(--text);
 }
 
-/* Card (same as before) */
+/* Card */
 .card{
   margin-top:0;
   background:var(--card);
@@ -109,6 +109,7 @@ html,body{
   box-shadow:0 10px 24px var(--shadow);
   border:1px solid rgba(0,0,0,0.03);
   width:100%;
+  transform:translateY(-10px); /* moves card slightly up */
 }
 .card h3{
   margin:0;
@@ -147,7 +148,7 @@ html,body{
         </div>
       </div>
 
-      <div id="time" class="time">0:00:00 PM</div>
+      <div id="time" class="time">0■00■00 PM</div>
 
       <div class="card">
         <h3>Adult All-Day</h3>
@@ -161,14 +162,16 @@ html,body{
 const timeEl=document.getElementById('time');
 const expEl=document.getElementById('expire');
 
+// custom square separator
 function formatTime(d){
   let h=d.getHours();
   const am=h<12;
   h=h%12||12;
   const m=String(d.getMinutes()).padStart(2,'0');
   const s=String(d.getSeconds()).padStart(2,'0');
-  return`${h}:${m}:${s} ${am?'AM':'PM'}`;
+  return`${h}■${m}■${s} ${am?'AM':'PM'}`;
 }
+
 function updateTime(){
   const now=new Date();
   timeEl.textContent=formatTime(now);
